@@ -20,6 +20,12 @@
       height: 600px;
     }
   </style>
+  <link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
 </head>
 <body>
   <h1>Play Your Own Flash File</h1>
@@ -52,11 +58,5 @@
       reader.readAsArrayBuffer(file);
     });
   </script>
-<link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-  }
-</script>
 </body>
 </html>
