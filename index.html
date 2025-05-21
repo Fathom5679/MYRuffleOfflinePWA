@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ruffle Flash Player - Load Your Own</title>
+  <script src="Ruffleselfhosted/ruffle.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 2rem;
+    }
+    #player-container {
+      margin-top: 1rem;
+    }
+    ruffle-player {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Play Your Own Flash File</h1>
+  <p>Select a .swf file from your computer:</p>
+  <input type="file" id="fileInput" accept=".swf">
+  <div id="player-container"></div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const container = document.getElementById('player-container');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const dataUrl = event.target.result;
+
+        // Remove existing player if present
+        container.innerHTML = '';
+
+        const ruffle = window.RufflePlayer.newest();
+        const player = ruffle.createPlayer();
+        container.appendChild(player);
+
+        // Load the SWF from the data URL
+        player.load({ data: new Uint8Array(event.target.result) });
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  </script>
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
+</body>
+</html>
